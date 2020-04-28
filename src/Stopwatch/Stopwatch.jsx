@@ -36,6 +36,12 @@ export class Stopwatch extends React.Component {
         });
     };
 
+    onClear = () => {
+        this.setState({
+            times: [],
+        });
+    }
+
     render() {
         return ( 
         <div>
@@ -45,9 +51,10 @@ export class Stopwatch extends React.Component {
                 <button onClick={this.onStop}>STOP</button>
                 <button onClick={this.onLap}>LAP</button>
                 <button onClick={this.onReset}>RESET</button>
+                <button onClick={this.onClear}>CLEAR</button>
             </div>
             <div>
-                {this.state.times.map((time, index) => 
+                {this.state.times.reverse().map((time, index) => 
                 (<div key={index}>{time}></div>))}
             </div>
         </div>
