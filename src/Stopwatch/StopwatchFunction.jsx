@@ -1,52 +1,21 @@
-import React, { useState, useRef } from "react";
-
-export function Stopwatch() {
-    const [ timer, setTimer ] = useState(0);
-    const [ times, setTimes ] = useState([]);
-    const timerInterval = useRef();
-
-    const onStart = () => {
-        if (timerInterval.current) return;
-
-        timerInterval.current = setInterval(() => {
-            setTimer((timer) => timer + 1);
-        }, 10);
-    }
-
-    const onStop = () => {
-        if (timerInterval.current){
-            clearInterval(timerInterval.current);
-            timerInterval.current = null;
-        }
-    };
-
-    const onReset = () => {
-        setTimer(0);
-    };
-
-    const onLap = () => {
-        setTimes([...times.reverse(), timer]);
-        setTimer(0);
-    };
-
-    const onClear = () => {
-        setTimes([]);
-    };
-    
-    return (
-        <div>
-            <div>{timer}</div>
-            <div>
-                <button onClick={onStart}>START</button>
-                <button onClick={onStop}>STOP</button>
-                <button onClick={onLap}>LAP</button>
-                <button onClick={onReset}>RESET</button>
-                <button onClick={onClear}>CLEAR</button>
-            </div>
-            <div>
-                {times.map((time, index) => 
-                (<div key={index}>{time}></div>))}
-            </div>
-        </div>
-    )
+import React from "react";
+import { formatTime } from "../helpers";
+export function Stopwatch(props) {
+  return (
+    <div>
+      <div>{formatTime(props.timer)}</div>
+      <div>
+        {!props.isActive && <button onClick={props.onStart}>START</button>}
+        {props.isActive && <button onClick={props.onStop}>STOP</button>}
+        <button onClick={props.onLap}>LAP</button>
+        <button onClick={props.onReset}>RESET</button>
+        <button onClick={props.onClear}>CLEAR</button>
+      </div>
+      <div>
+        {props.times.map((time, index) => (
+          <div key={index}>{formatTime(time)}</div>
+        ))}
+      </div>
+    </div>
+  );
 }
